@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/classes/ImageTemplateChecker.php';
- 
+
 use Scottboms\Check\ImageTemplateChecker;
 use Composer\Semver\Semver;
 use Kirby\Cms\App as Kirby;
@@ -16,7 +16,7 @@ Kirby::plugin(
   info: [
     'homepage' => 'https://github.com/scottboms/image-template-checker'
   ],
-  version: '1.0.4',
+  version: '1.0.0',
   license: 'MIT',
   extends: [
   'options' => [],
