@@ -7,13 +7,15 @@
         <table v-if="images.length">
         <thead>
           <tr>
+            <th style="width: 3rem">#</th>
             <th data-mobile="true">Filename</th>
             <th>Parent Page</th>
             <th data-mobile="true" data-align="right" style="width: 12rem"> </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="image in images" :key="image.id">
+          <tr v-for="(image, index) in images" :key="image.id">
+            <td>{{ index + 1 }}</td>
             <td data-mobile="true">{{ image.filename }}</td>
             <td>{{ image.parent }}</td>
             <td data-mobile="true" data-align="right">
