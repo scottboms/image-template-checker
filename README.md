@@ -1,5 +1,7 @@
 # Template Checker
 
+![Plugin Preview](src/assets/template-checker-plugin.jpg)
+
 This plugin adds a Panel Area and menu button to locate site images missing an associated file template.
 
 ## Installation
