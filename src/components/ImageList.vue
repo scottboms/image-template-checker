@@ -1,68 +1,60 @@
 <template>
-  <k-panel-inside>
-
-    <k-view class="k-images-without-template-view">
-      <k-header>Images</k-header>
-      <div class="k-table">
-        <table v-if="images.length">
-        <thead>
-          <tr>
-            <th style="width: 3rem">#</th>
-            <th data-mobile="true">Filename</th>
-            <th>Parent Page</th>
-            <th data-mobile="true" data-align="right" style="width: 12rem"> </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(image, index) in images" :key="image.id">
-            <td>{{ index + 1 }}</td>
-            <td data-mobile="true">{{ image.filename }}</td>
-            <td>{{ image.parent }}</td>
-            <td data-mobile="true" data-align="right">
-              <k-bar align="end">
-                <k-view-button
-                  variant="filled"
-                  size="xs"
-                  icon="preview"
-                  theme="blue"
-                  text="View"
-                  :link="image.url"
-                />
-                <k-view-button
-                  v-if="image.parentPanelUrl"
-                  variant="filled"
-                  size="xs"
-                  icon="edit"
-                  text="Edit..."
-                  :link="image.parentPanelUrl"
-                />
-              </k-bar>
-            </td>
-          </tr>
-        </tbody>
-        </table>
-
-        <k-grid v-else style="--columns: 1; gap: 0.5rem">
-          <k-empty text='No images missing blueprint templates found' icon="image" />
-        </k-grid>
-      </div>
-    </k-view>
-
-  </k-panel-inside>
+	<k-panel-inside>
+		<k-view class="k-images-without-template-view">
+			<k-header>Images</k-header>
+			<k-section label="Images Without a File Blueprint">
+				<k-items
+					v-if="images.length"
+					:items="items"
+					:layout="table"
+					:sortable="true"
+				/>
+				<k-grid v-else style="--columns: 1; gap: 0.5rem">
+					<k-empty text='No images found' icon="image" />
+				</k-grid>
+			</k-section>
+		</k-view>
+	</k-panel-inside>
 </template>
 
 <script>
 export default {
-  name: 'ImageList',
-  props: {
-    images: {
-      type: Array,
-      default: () => []
-    }
-  },
-  mounted() {
-    // Debugging
-    // console.log('Image props:', this.images);
-  }
+	name: 'ImageList',
+	props: {
+		images: {
+			type: Array,
+			default: () => []
+		}
+	},
+	computed: {
+		items() {
+			return this.images.map((image, index) => ({
+				text: image.filename,
+				info: image.parent,
+				link: image.fileUrl,
+				image: {
+					src: image.thumbUrl,
+					cover: true,
+					back: 'pattern',
+				},
+				options: [
+					image.parentPanelUrl && {
+						icon: 'open',
+						text: 'Edit...',
+						link: image.parentPanelUrl
+					},
+					{
+						icon: 'window',
+						text: 'Preview',
+						link: image.url
+					}
+				].filter(Boolean)
+			}));
+		}
+	},
+	mounted() {
+		// Debugging
+		console.log('Image props:', this.images);
+	}
 };
 </script> 

@@ -1,33 +1,33 @@
 {
-  "name": "scottboms/image-template-checker",
-  "description": "Image Template Checker",
-  "type": "kirby-plugin",
-  "homepage": "https://github.com/scottboms/image-template-checker",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Scott Boms",
-      "email": "plugins@scottboms.com"
-    }
-  ],
-  "support": {
-    "docs": "https://github.com/scottboms/image-template-checker/blob/main/README.md",
-    "source": "https://github.com/scottboms/image-template-checker"
-  },
-    "license": "MIT",
-    "keywords": [
-      "kirby",
-      "kirby-cms",
-      "kirby-plugin",
+	"name": "scottboms/template-checker",
+	"description": "Template Checker",
+	"type": "kirby-plugin",
+	"homepage": "https://github.com/scottboms/template-checker",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Scott Boms",
+			"email": "plugins@scottboms.com"
+		}
+	],
+	"support": {
+		"docs": "https://github.com/scottboms/template-checker/blob/main/README.md",
+		"source": "https://github.com/scottboms/template-checker"
+	},
+		"license": "MIT",
+		"keywords": [
+			"kirby",
+			"kirby-cms",
+			"kirby-plugin",
 			"kirby4",
-      "kirby5"
-    ],
-  "require": {
-    "php": ">8.2.0 <8.4.0",
-    "getkirby/cms": "^4.0 || ^5.0",
-    "getkirby/composer-installer": "^1.1"
-  },
-  "extra": {
-    "installer-name": "image-template-checker"
-  }
+			"kirby5"
+		],
+	"require": {
+		"php": ">8.2.0 <8.4.0",
+		"getkirby/cms": "^4.0 || ^5.0",
+		"getkirby/composer-installer": "^1.1"
+	},
+	"extra": {
+		"installer-name": "template-checker"
+	}
 }
