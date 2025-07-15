@@ -40,7 +40,7 @@ export default {
 	},
   watch: {
     templateDrawer(open) {
-      //console.log('templateDrawer changed:', open);
+      console.log('templateDrawer changed:', open);
     }
   },
 	computed: {
@@ -56,10 +56,10 @@ export default {
 					back: 'pattern',
 				},
 				options: [
-					image.parentPanelUrl && {
+					image.fileUrl && {
 						icon: 'open',
 						text: 'Edit...',
-						link: image.parentPanelUrl
+						link: image.fileUrl,
 					},
 					{
 						icon: 'window',
@@ -76,14 +76,14 @@ export default {
 		}
 	},
 	methods: {
-		// This is now globally accessible within the component
+		// this is now globally accessible within the component
 	  handleTemplateSubmit(formData) {
 	    const { key, template } = formData;
 
 	this.$api.post('checker/assign', { key, template })
 	    .then(() => {
 	      panel.notification.success(`Assigned template: ${template}`);
-	      //panel.view.reload(); // Optional, reload view
+	      //panel.view.reload(); // optional, reload view
 	    })
 	    .catch(() => {
 	      panel.notification.error('Failed to assign template');
@@ -115,11 +115,20 @@ export default {
 							'value': image.templateInContent || null,
 							'width': '1/1',
 							'help': 'Choose an available file template'
+						},
+						'alt': {
+							'label': 'Alt Text',
+							'type': 'textarea',
+							'buttons': false,
+							'size': 'medium',
+							'value': `${image.alt}`,
+							'width': '1.1'
 						}
 					},
 					value: {
-						key: `${image.id}`,
+						key: image.id,
 						template: image.templateInContent || null,
+						alt: image.alt,
 						//contentFilename: image.contentFilename
 					},
 				},
@@ -133,7 +142,7 @@ export default {
 		}
 	},
 	mounted() {
-		// Debugging
+		// debugging
 		console.log('Image props:', this.images);
 		console.log('🎨 availableTemplates:', this.availableTemplates);
 	}

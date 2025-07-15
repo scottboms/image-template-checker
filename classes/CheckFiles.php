@@ -14,10 +14,11 @@ class CheckFiles
 		$contentExtension = kirby()->contentExtension(); // ← gets 'txt', 'json', etc.
 
 		foreach (site()->index()->files()->filterBy('type', 'image') as $file) {
-			$hasContent = $file->exists(); // Kirby auto-checks if .txt exists
+			$hasContent = $file->exists(); // kirby auto-checks if .txt exists
 			$templateFromContent = $file->content()->get('template')->value();
+			$altText = $file->content()->get('alt')->value();
 
-			// Flag if the .txt file does not exist or if it exists but has no template
+			// flag if the .txt file does not exist or if it exists but has no template
 			if (!$hasContent || empty($templateFromContent)) {
 				$parent = $file->parent();
 				$parentPanelUrl = null;
@@ -33,16 +34,17 @@ class CheckFiles
 					'name' => $file->name(),
 					'url' => $file->url(),
 					'panelUrl' => $file->panelUrl(),
+					'parentPanelUrl' => $file->parent()?->panelUrl(),
 					'blueprint' => $file->blueprint(),
 					'mime' => $file->mime(),
 					'thumbUrl' => $file->resize(300)->url(),
 					'parent' => $parent?->title()->value() ?? null,
 					'parentId' => $file->parent()->id(),
-					'fileUrl' => $parentPanelUrl . '/' . $file->filename(),
-					'parentPanelUrl' => $parentPanelUrl,
+					'fileUrl' => '/pages/' . $parentPanelUrl . '/files/' . $file->filename(),
 					'hasContentFile' => $hasContent,
 					'contentFilename' => $file->filename() . '.' . $contentExtension,
-					'templateInContent' => $templateFromContent ?: null
+					'templateInContent' => $templateFromContent ?: null,
+					'alt' => $altText ?? null
 				];
 			}
 		}
@@ -64,20 +66,20 @@ class CheckFiles
 				];
 			}
 
-		usort($templates, fn($a, $b) => strcmp($a['text'], $b['text'])); // Alphabetize the list
+		usort($templates, fn($a, $b) => strcmp($a['text'], $b['text'])); // alphabetize the list
 		return $templates;
 	}
 
   // --------------------------------------------------------------------------
-  // Logging
-  // Implements custom logging to /site/logs/debug.log
+  // logging
+  // implements custom logging to /site/logs/debug.log
   public function log(string $level, string $message): void
   {
     $timestamp = date('Y-m-d H:i:s');
     $logDir = kirby()->root('logs');
     $logFile = $logDir . '/debug.log';
 
-    // Ensure log directory exists
+    // ensure log directory exists
     Dir::make($logDir);
     $entry = Str::unhtml("[$timestamp][$level] $message") . PHP_EOL;
     F::append($logFile, $entry);
