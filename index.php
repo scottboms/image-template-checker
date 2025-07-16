@@ -59,54 +59,43 @@ Kirby::plugin(
 	'api' => [
 		'routes' => [
 			[
-				'pattern' => 'checker/assign',
-					'method' => 'POST',
+				'pattern'   => 'checker/assign',
+					'method'  => 'POST',
+					'auth'    => true,
 					'action'  => function () {
-						$user = kirby()->user();
-						$logger = new CheckFiles();
 
-						$request = kirby()->request();
-						$fileId = $request->body()->get('key');
-						$template = $request->body()->get('template');
-						$field = 'template'; // name of the field to add/modify
+						//$logger = new CheckFiles();
 
-						$logger->log('debug', 'values: File ' . $fileId . ' Template: ' . $template);
+						// get values submitted from the drawer component
+						$key = get('key');
+						$template = get('template');
+						$alt = get('alt');
 
-						if (!$user) {
-							$logger->log('error', 'Unauthorized access to checker/assign');
-							throw new Exception('You must be logged in', 403);
-							// otherwise continue with saving
+						//$logger->log('debug', 'values: Key ' . $key . ' Template: ' . $template . 'Alt: ' . $alt);
+
+					  if (!$file = $key ? $file = site()->file($key) ?? page()->file($key) : null) {
+							throw new Exception('File not found', 404);
+						}
+						$updates = []; // create array of values to update
+
+						if ($template) {
+							$updates['template'] = $template;
 						}
 
+						if ($alt !== null) {
+							$updates['alt'] = $alt;
+						}
+
+						// try performing updates...
 						try {
-							// TODO: this all needs work to actually do anything
-							$image = kirby()->site()->index(true)->findById($fileId);
-							$logger->log('info', 'Image: ' . $image);
-
-							if (!$image) {
-								$logger->log('error', "File not found: $fileId");
-								throw new Exception('File not found!', 404);
-							}
-
-							if($template === 'template') {
-								//$image->update([$field => $template]);
-								$logger->log('debug', 'Template is ' . $template);
-								//$image = $image->changeTemplate($template);
-								//$image = $image->update(['template' => $template]);
-							}
-
+							$file->update($updates);
 							return [
-							  'fieldId' => $fileId,
-							  'template' => $template,
-							  'success' => true,
-							  'message' => 'Template assigned'
+								'status' => 'ok',
+								'message' => 'File updated',
 							];
 						} catch (Exception $e) {
-							$logger->log('error', 'Exception: ' . $e->getMessage());
-							return ['error' => $e->getMessage()];
+							throw new Exception('Update failed: ' . $e->getMessage(), 500);
 						}
-
-
 
 					}
 			]

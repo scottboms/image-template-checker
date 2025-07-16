@@ -35,12 +35,12 @@ export default {
 	data() {
 		return {
 			selectedImage: null,
-			templateDrawer: false, // DEBUG
+			templateDrawer: false, // DEBUG, set to true
 		};
 	},
   watch: {
     templateDrawer(open) {
-      console.log('templateDrawer changed:', open);
+      // console.log('templateDrawer changed:', open);
     }
   },
 	computed: {
@@ -56,34 +56,34 @@ export default {
 					back: 'pattern',
 				},
 				options: [
-					image.fileUrl && {
+					image.fileUrl && 
+					{
+						icon: 'settings',
+						text: 'Assign Template…',
+						click: () => this.openTemplateSelector(image)
+					},
+					{
 						icon: 'open',
-						text: 'Edit...',
+						text: 'Edit Image...',
 						link: image.fileUrl,
 					},
 					{
 						icon: 'window',
 						text: 'Preview',
 						link: image.url
-					},
-					{
-						icon: 'settings',
-						text: 'Assign Template…',
-						click: () => this.openTemplateSelector(image)
 					}
 				].filter(Boolean)
 			}));
 		}
 	},
 	methods: {
-		// this is now globally accessible within the component
 	  handleTemplateSubmit(formData) {
-	    const { key, template } = formData;
+	    const { key, template, alt } = formData;
 
-	this.$api.post('checker/assign', { key, template })
+	this.$api.post('checker/assign', { key, template, alt })
 	    .then(() => {
 	      panel.notification.success(`Assigned template: ${template}`);
-	      //panel.view.reload(); // optional, reload view
+	      panel.view.reload(); // reload view
 	    })
 	    .catch(() => {
 	      panel.notification.error('Failed to assign template');
@@ -91,20 +91,18 @@ export default {
 	  },
 
 		openTemplateSelector(image) {
-			console.log('🗃️ Opening drawer with file ID:', image.id);
+			// console.log('Opening Drawer with File ID:', image.id);
 
 			this.$panel.drawer.open({
 				component: 'k-form-drawer',
 				props: {
-					title: 'Assign File Template',
+					title: 'Quick Edit',
 					icon: 'image',
 					fields: {
 						'filename': {
 							'label': 'File',
-							'type': 'info',
+							'type': 'hidden',
 							'text': `${image.id}`,
-							'theme': 'empty',
-							'icon': 'file',
 							'width': '1/1',
 						},
 						'template': {
@@ -129,7 +127,6 @@ export default {
 						key: image.id,
 						template: image.templateInContent || null,
 						alt: image.alt,
-						//contentFilename: image.contentFilename
 					},
 				},
 				on: {
@@ -143,8 +140,8 @@ export default {
 	},
 	mounted() {
 		// debugging
-		console.log('Image props:', this.images);
-		console.log('🎨 availableTemplates:', this.availableTemplates);
+		// console.log('Image Props:', this.images);
+		// console.log('Available Templates:', this.availableTemplates);
 	}
 };
 </script>
