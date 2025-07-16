@@ -38,6 +38,7 @@ class CheckFiles
 					'blueprint' => $file->blueprint(),
 					'mime' => $file->mime(),
 					'thumbUrl' => $file->resize(300)->url(),
+					'size' => $file->dimensions()->width() . ' x ' . $file->dimensions()->height() . ' px' ?? null,
 					'parent' => $parent?->title()->value() ?? null,
 					'parentId' => $file->parent()->id(),
 					'fileUrl' => '/pages/' . $parentPanelUrl . '/files/' . $file->filename(),

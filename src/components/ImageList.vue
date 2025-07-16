@@ -107,6 +107,15 @@ export default {
 					title: 'Quick Edit',
 					icon: 'image',
 					fields: {
+						'preview': {
+							'label': 'Preview',
+							'type': 'thumbnail',
+							'width': '1/1',
+							'src': image.thumbUrl,
+							'alt': image.alt || '',
+							'size': image.size,
+							'filename': image.filename
+						},
 						...(this.availableTemplates.length === 0 
 							? {
 								'notice': {
@@ -130,20 +139,19 @@ export default {
 								}
 							}
 						),
-						'filename': {
-							'label': 'File',
-							'type': 'hidden',
-							'text': `${image.id}`,
-							'width': '1/1',
-						},
-						
 						'alt': {
 							'label': 'Alt Text',
 							'type': 'textarea',
 							'buttons': false,
 							'size': 'medium',
 							'value': `${image.alt}`,
-							'width': '1.1'
+							'width': '1/1'
+						},
+						'filename': {
+							'label': 'File',
+							'type': 'hidden',
+							'text': `${image.id}`,
+							'width': '1/1',
 						}
 					},
 					value: {

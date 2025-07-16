@@ -17,7 +17,7 @@ Kirby::plugin(
 	info: [
 		'homepage' => 'https://github.com/scottboms/template-checker'
 	],
-	version: '1.1.1',
+	version: '1.2.0',
 	license: 'MIT',
 	extends: [
 	'options' => [],
