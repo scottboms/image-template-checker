@@ -58,13 +58,19 @@ class CheckFiles
 		$filesPath = kirby()->root('blueprints') . '/files';
 
 		foreach (glob($filesPath . '/*.yml') as $file) {
-				$name = pathinfo($file, PATHINFO_FILENAME);
-				$label = ucfirst(str_replace(['-', '_'], ' ', $name));
-				$templates[] = [
-					'value' => $name,
-					'text'  => $label
-				];
+			$name = pathinfo($file, PATHINFO_FILENAME);
+
+			// skip the 'default' template
+			if ($name === 'default') {
+				continue;
 			}
+
+			$label = ucfirst(str_replace(['-', '_'], ' ', $name));
+			$templates[] = [
+				'value' => $name,
+				'text'  => $label
+			];
+		}
 
 		usort($templates, fn($a, $b) => strcmp($a['text'], $b['text'])); // alphabetize the list
 		return $templates;
@@ -84,6 +90,5 @@ class CheckFiles
     $entry = Str::unhtml("[$timestamp][$level] $message") . PHP_EOL;
     F::append($logFile, $entry);
   }
-
 
 }

@@ -77,16 +77,24 @@ export default {
 		}
 	},
 	methods: {
-	  handleTemplateSubmit(formData) {
-	    const { key, template, alt } = formData;
+		handleTemplateSubmit(formData) {
+			const { key, template, alt } = formData;
 
-	this.$api.post('checker/assign', { key, template, alt })
-	    .then(() => {
-	      panel.notification.success(`Assigned template: ${template}`);
-	      panel.view.reload(); // reload view
+			this.$api.post('checker/assign', { key, template, alt })
+			.then(() => {
+				panel.drawer.close();
+				panel.notification.success({
+					message: `Changes saved`,
+					timeout: 4000
+				});
+
+				panel.view.reload(); // reload view
 	    })
 	    .catch(() => {
-	      panel.notification.error('Failed to assign template');
+				panel.notification.error({
+					message: 'An error occurred',
+					timeout: 4000
+				});
 	    });
 	  },
 
