@@ -96,7 +96,6 @@ Kirby::plugin(
 						} catch (Exception $e) {
 							throw new Exception('Update failed: ' . $e->getMessage(), 500);
 						}
-
 					}
 			]
 		]

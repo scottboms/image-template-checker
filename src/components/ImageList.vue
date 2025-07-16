@@ -39,10 +39,10 @@ export default {
 		};
 	},
   watch: {
-    templateDrawer(open) {
-      // console.log('templateDrawer changed:', open);
-    }
-  },
+		templateDrawer(open) {
+			// console.log('templateDrawer changed:', open);
+		}
+	},
 	computed: {
 		items() {
 
@@ -89,14 +89,14 @@ export default {
 				});
 
 				panel.view.reload(); // reload view
-	    })
-	    .catch(() => {
+			})
+			.catch(() => {
 				panel.notification.error({
 					message: 'An error occurred',
 					timeout: 4000
 				});
-	    });
-	  },
+			});
+		},
 
 		openTemplateSelector(image) {
 			// console.log('Opening Drawer with File ID:', image.id);

@@ -48,7 +48,6 @@ class CheckFiles
 				];
 			}
 		}
-
 		return $images;
 	}
 
@@ -56,18 +55,30 @@ class CheckFiles
 	{
 		$templates = [];
 		$filesPath = kirby()->root('blueprints') . '/files';
+		$blueprintFiles = Dir::index($filesPath, true);
 
-		foreach (glob($filesPath . '/*.yml') as $file) {
-			$name = pathinfo($file, PATHINFO_FILENAME);
+		// debug: log all found blueprint file paths
+		// foreach ($blueprintFiles as $path) {
+		//	$this->log('debug', 'Found blueprint: ' . $path);
+		// }
 
-			// skip the 'default' template
+		foreach ($blueprintFiles as $relativePath) {
+			if (pathinfo($relativePath, PATHINFO_EXTENSION) !== 'yml') {
+				continue;
+			}
+			$name = pathinfo($relativePath, PATHINFO_FILENAME);
+
+			// skip 'default.yml' regardless of folder depth
 			if ($name === 'default') {
 				continue;
 			}
 
-			$label = ucfirst(str_replace(['-', '_'], ' ', $name));
+			$parts = explode('/', $relativePath);
+			$label = implode(' / ', array_map(fn($part) => ucfirst(str_replace(['-', '_'], ' ', pathinfo($part, PATHINFO_FILENAME))), $parts));
+			$value = str_replace('.yml', '', $relativePath);
+
 			$templates[] = [
-				'value' => $name,
+				'value' => $value,
 				'text'  => $label
 			];
 		}
@@ -76,19 +87,18 @@ class CheckFiles
 		return $templates;
 	}
 
-  // --------------------------------------------------------------------------
-  // logging
-  // implements custom logging to /site/logs/debug.log
-  public function log(string $level, string $message): void
-  {
-    $timestamp = date('Y-m-d H:i:s');
-    $logDir = kirby()->root('logs');
-    $logFile = $logDir . '/debug.log';
+	// --------------------------------------------------------------------------
+	// logging
+	// implements custom logging to /site/logs/debug.log
+	public function log(string $level, string $message): void
+	{
+		$timestamp = date('Y-m-d H:i:s');
+		$logDir = kirby()->root('logs');
+		$logFile = $logDir . '/template-checker.log';
 
-    // ensure log directory exists
-    Dir::make($logDir);
-    $entry = Str::unhtml("[$timestamp][$level] $message") . PHP_EOL;
-    F::append($logFile, $entry);
-  }
-
+		// ensure log directory exists
+		Dir::make($logDir);
+		$entry = Str::unhtml("[$timestamp][$level] $message") . PHP_EOL;
+		F::append($logFile, $entry);
+	}
 }
