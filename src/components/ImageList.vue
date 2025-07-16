@@ -107,21 +107,36 @@ export default {
 					title: 'Quick Edit',
 					icon: 'image',
 					fields: {
+						...(this.availableTemplates.length === 0 
+							? {
+								'notice': {
+									'label': 'Notice',
+									'type': 'info',
+									'icon': 'info',
+									'theme': 'warning',
+									'text': 'No file blueprints are available. You need to create one first.'
+								}
+							} 
+							: {
+								'template': {
+									'label': 'Template',
+									'type': 'select',
+									'required': true,
+									'disabled': this.availableTemplates.length === 0,
+									'options': this.availableTemplates,
+									'value': image.templateInContent || null,
+									'width': '1/1',
+									'help': 'Choose an available file template'
+								}
+							}
+						),
 						'filename': {
 							'label': 'File',
 							'type': 'hidden',
 							'text': `${image.id}`,
 							'width': '1/1',
 						},
-						'template': {
-							'label': 'Template',
-							'type': 'select',
-							'required': true,
-							'options': this.availableTemplates,
-							'value': image.templateInContent || null,
-							'width': '1/1',
-							'help': 'Choose an available file template'
-						},
+						
 						'alt': {
 							'label': 'Alt Text',
 							'type': 'textarea',
