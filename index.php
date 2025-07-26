@@ -4,12 +4,15 @@ require_once __DIR__ . '/classes/CheckFiles.php';
 
 use Scottboms\Check\CheckFiles;
 use Composer\Semver\Semver;
-use Kirby\Cms\App as Kirby;
+use Kirby\Cms\App;
 use Kirby\Toolkit\F;
 
-// validate Kirby version
-if (Semver::satisfies(Kirby::version() ?? '0.0.0', '~4.0 || ~5.0') === false) {
-	throw new Exception('Template Checker requires Kirby 4 or 5');
+// shamelessly borrowed from distantnative/retour-for-kirby
+if (
+	version_compare(App::version() ?? '0.0.0', '4.0.1', '<') === true ||
+	version_compare(App::version() ?? '0.0.0', '6.0.0', '>=') === true
+) {
+	throw new Exception('Template Checker requires Kirby v4 or v5');
 }
 
 Kirby::plugin(
@@ -17,7 +20,7 @@ Kirby::plugin(
 	info: [
 		'homepage' => 'https://github.com/scottboms/template-checker'
 	],
-	version: '1.2.0',
+	version: '1.2.1',
 	license: 'MIT',
 	extends: [
 	'options' => [],
