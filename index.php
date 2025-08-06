@@ -18,10 +18,10 @@ if (
 Kirby::plugin(
 	name: 'scottboms/template-checker',
 	info: [
-		'homepage' => 'https://github.com/scottboms/template-checker'
+		'homepage' => 'https://github.com/scottboms/template-checker',
+		'license'  => 'MIT'
 	],
-	version: '1.2.1',
-	license: 'MIT',
+	version: '1.2.2',
 	extends: [
 	'options' => [],
 	'areas' => [
